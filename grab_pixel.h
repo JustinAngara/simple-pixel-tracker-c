@@ -33,4 +33,6 @@ color_pixel getPixel(ScreenCapture* sc, int x, int y);
 // Frees the memory held by the capture buffer
 void freeScreenCapture(ScreenCapture* sc);
 
+int captureRegion(ScreenCapture* sc, int x1, int y1, int x2, int y2);
+
 #endif // GRAB_PIXEL_H

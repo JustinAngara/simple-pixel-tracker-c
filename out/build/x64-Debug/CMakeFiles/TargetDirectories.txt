@@ -1,0 +1,3 @@
+C:/Users/justi/C Code/PixelFinder/out/build/x64-Debug/CMakeFiles/PixelFinder.dir
+C:/Users/justi/C Code/PixelFinder/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/justi/C Code/PixelFinder/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir

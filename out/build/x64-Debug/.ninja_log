@@ -1,0 +1,4 @@
+# ninja log v6
+20	120	7719423936367999	CMakeFiles/PixelFinder.dir/time_tracker.c.obj	c7bcbcdce2deb72d
+32	128	7719423936478537	CMakeFiles/PixelFinder.dir/keylistener.c.obj	245bcb8490d1d8d5
+14	419	7719423936307942	CMakeFiles/PixelFinder.dir/grab_pixel.c.obj	47b8ebdab10e893b
