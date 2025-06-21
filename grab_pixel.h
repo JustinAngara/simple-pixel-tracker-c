@@ -3,36 +3,51 @@
 
 #include <windows.h>
 
-// Struct to represent an RGB color
+// struct to represent an rgb color
 typedef struct {
     int r;
     int g;
     int b;
 } RGB;
 
-// Struct to represent a color pixel (with position + color)
+// struct to represent a color pixel (with position + color)
 typedef struct {
     int x;
     int y;
     RGB rgb;
 } color_pixel;
 
-// Struct to represent a screen capture context
+// struct to represent a screen capture context
 typedef struct {
-    BYTE* buffer;
-    int width;
-    int height;
+    BYTE* buffer;    // pointer to raw pixel buffer
+    int width;       // width of captured region
+    int height;      // height of captured region
 } ScreenCapture;
 
-// Initializes screen capture (allocates and captures the screen)
+/*
+ * initializes reusable gdi handles and allocates initial buffer.
+ * must be called before captureRegion()
+ * returns 0 on success, -1 on failure
+ */
 int initScreenCapture(ScreenCapture* sc);
 
-// Gets a color pixel from the capture buffer
+/*
+ * captures a rectangular screen region (x1, y1) to (x2, y2)
+ * into the internal buffer. region size must be consistent with
+ * what was allocated in initScreenCapture
+ * returns 0 on success, -1 on failure
+ */
+int captureRegion(ScreenCapture* sc, int x1, int y1, int x2, int y2);
+
+/*
+ * retrieves the color of the pixel at (x, y) from the capture buffer
+ * coordinates are relative to the captured region, not screen coordinates
+ */
 color_pixel getPixel(ScreenCapture* sc, int x, int y);
 
-// Frees the memory held by the capture buffer
+/*
+ * frees internal buffer and cleans up gdi resources
+ */
 void freeScreenCapture(ScreenCapture* sc);
-
-int captureRegion(ScreenCapture* sc, int x1, int y1, int x2, int y2);
 
 #endif // GRAB_PIXEL_H

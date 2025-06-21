@@ -1,14 +1,11 @@
 #include <stdio.h>
 #include "threadpool.h"
 #include "grab_pixel.h"
-#include <time.h>
+#include "keylistener.h"
 //
 // Created by justi on 6/18/2025.
 
 void checkForPixel() {
-    struct timespec start, end;
-    clock_gettime(CLOCK_MONOTONIC, &start);  // Start timer
-
     // Setup capture context once
     ScreenCapture sc = {0};
     if (initScreenCapture(&sc) != 0) {
@@ -28,42 +25,30 @@ void checkForPixel() {
     for (int y = 0; y < (y2 - y1); y++) {
         for (int x = 0; x < (x2 - x1); x++) {
             color_pixel z = getPixel(&sc, x, y);
-            // Optional: insert color logic here
             if (z.rgb.r == 255 && z.rgb.g == 0 && z.rgb.b == 0) {
                 printf("Found pure red at (%d, %d)\n", x, y);
             }
         }
     }
 
-    clock_gettime(CLOCK_MONOTONIC, &end);  // End timer
-
-    double duration_ms = (end.tv_sec - start.tv_sec) * 1000.0 +
-                         (end.tv_nsec - start.tv_nsec) / 1e6;
-
-    printf("end with iteration — took %.3f ms\n", duration_ms);
     freeScreenCapture(&sc);
 }
-
-
-//
-
 
 // create a looker up display thing
 
 int main() {
+    // Test checkForPixel first to make sure it works
+    printf("Testing pixel capture...\n");
+    checkForPixel();
 
-
-    // general threadpool, setup the threads and stuff
-    TaskFunc tasks_arr[] = { checkForPixel };
-
-    // pass in the size to prevent repetitive use
+    // If that worked, try with thread pool but only 1 thread
+    TaskFunc tasks_arr[] = { checkForPixel, listenClick };
     int num_elements = sizeof(tasks_arr) / sizeof(TaskFunc);
-    // this will setup the pool
-    ThreadPool *pool = thread_pool_create(num_elements);
 
-	// now run the tasks in the pool
+    // Create pool with only 1 thread to avoid conflicts
+    ThreadPool *pool = thread_pool_create(1);  // Force single thread
+
     run(pool, tasks_arr, num_elements);
-    
-    return 0;
 
+    return 0;
 }

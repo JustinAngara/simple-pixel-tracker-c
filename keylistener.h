@@ -4,5 +4,5 @@
 
 #ifndef KEYLISTENER_H
 #define KEYLISTENER_H
-
+void listenClick();
 #endif //KEYLISTENER_H

@@ -92,16 +92,18 @@ void foo1() {
 }
 
 int run(ThreadPool *pool, TaskFunc tasks[], int size) {
-
-    while (1) {
-
-        // iterate to add to new pool
-        for (int i = 0; i<size; i++) {
-            thread_pool_add(pool, tasks[i], NULL);
-        }
-
+    // Add each task only ONCE - they will run continuously
+    for (int i = 0; i < size; i++) {
+        thread_pool_add(pool, tasks[i], NULL);
     }
-    thread_pool_destroy(pool);
 
+    // keep main thread alive while worker threads run
+    printf("Tasks started. Press Ctrl+C to exit.\n");
+    while (1) {
+        Sleep(1000);  // sleep for 1 second, then check again
+    }
+
+    // This won't be reached unless you add signal handling
+    thread_pool_destroy(pool);
     return 0;
 }
